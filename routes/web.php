@@ -12,5 +12,3 @@
 */
 
 Route::get('/', 'IndexController@index');
-Route::get('/tariff/index', 'TariffController@index');
-Route::post('/order/store', 'OrderController@store');

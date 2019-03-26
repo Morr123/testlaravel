@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use DB;
-
 class Tariff extends Model
 {
 	public static $weekdays = [
@@ -33,9 +30,5 @@ class Tariff extends Model
 				'slug'=> self::$weekdays[$value],
 			];
 		})->all();
-	}
-	
-	public function scopeWhereWeekday($query, $value){
-		$query->whereRaw('FIND_IN_SET(?,weekdays) > 0', [$value]);
 	}
 }

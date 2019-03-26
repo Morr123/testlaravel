@@ -10,6 +10,7 @@ var app = new Vue({
 		},
 		tariffs: [],
 		errors: [],
+		message: false,
 	},
 	computed: {
 		getWeekdays(){
@@ -20,7 +21,7 @@ var app = new Vue({
 	},
 	mounted: function(){
 		$.ajax({
-			url: '/tariff/index',
+			url: '/api/v1/tariff/index',
 			success: function(r){
 				this.tariffs = r.data;
 			}.bind(this)
@@ -35,17 +36,21 @@ var app = new Vue({
 				  'X-CSRF-TOKEN': window.csrf
 				},
 				method: 'POST',
-				url: '/order/store',
+				url: '/api/v1/order/store',
 				data: this.form,
 				success: function(r){
-					alert('Success');
+					self.message = r.message;
 				},
 				error: function(r){
 					self.errors = r.responseJSON.errors;
-					//console.log(r);
-					//alert('Ошибка');
 				}
 			});
+		},
+		containsErorr: function(field){
+			return field in this.errors;
+		},
+		validateClear: function(field){
+			delete this.errors[field];
 		}
 	}
 })

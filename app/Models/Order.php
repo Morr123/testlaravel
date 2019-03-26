@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\User;
 use DB;
 
 class Order extends Model
@@ -23,18 +21,9 @@ class Order extends Model
 	
 	public static function store(array $data){
 		return DB::transaction(function() use($data){
-			DB::raw('LOCK TABLES users WRITE');
-			$user = User::firstOrNew(['phone'=>$data['phone']]);
-			$user->name = $data['name'];
-			$user->save();
-			
-			$item = self::create([
-				'user_id'   => $user->id,
-				'tariff_id' => $data['tariff_id'],
-				'weekday'   => $data['weekday'],
-				'address'	=> $data['address']
-			]);
-
+			User::lockTable();
+			$user = User::updateOrCreate(['phone'=>$data['phone']], ['name'=>$data['name']]);
+			$item = self::create(['user_id' => $user->id] + $data);
 			return $item;
 		});
 	}
