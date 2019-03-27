@@ -16,7 +16,7 @@ abstract class Model extends BaseModel
 	}
 	
 	public function scopeFindInSet($query, $field, $value){
-		if(!preg_match("/\w*/", $field))
+		if(!preg_match("/\w+/", $field))
 			throw new \Exception('Encorrect field');
 			
 		$query->whereRaw("FIND_IN_SET(?,$field) > 0", [$value]);

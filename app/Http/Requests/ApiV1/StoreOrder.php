@@ -16,7 +16,7 @@ class StoreOrder extends FormRequest
 	{
         return [
             'phone'=>'required|regex:/8[0-9]{10}/',
-			'name'=>'required',
+			'name'=>'required|max:255',
 			'tariff_id'=>'required',
 			'weekday'=>'required|in_set:'.(Tariff::class).',weekdays,tariff_id',
 			'address'=>'required'
